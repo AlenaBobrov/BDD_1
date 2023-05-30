@@ -1,5 +1,6 @@
 package ru.netology.test;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.DataHelper;
 import ru.netology.page.DashboardPage;
@@ -12,6 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class MoneyTransferTest {
     DataHelper.InfoCard card1 = DataHelper.getFirstCardNumber();
     DataHelper.InfoCard card2 = DataHelper.getSecondCardNumber();
+
+    @BeforeEach
+
     @Test
     void shouldTransferMoneyBetweenCards() {
         open("http://localhost:9999");
@@ -20,14 +24,14 @@ class MoneyTransferTest {
         var verificationPage = loginPage.validLogin(authInfo);
         var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
         verificationPage.validVerify(verificationCode);
-        int amount = 100;
-        int firstBalance = DashboardPage.getFirstCardBalance();
-        int secondBalance = DashboardPage.getSecondCardBalance();
         DashboardPage dashboardPage = new DashboardPage();
+        int amount = 100;
+        int firstBalance = dashboardPage.getCardBalance(card1);
+        int secondBalance = dashboardPage.getCardBalance(card2);
         var transfer = dashboardPage.choseCard(card1);
         transfer.upCard(amount,card2);
-        assertEquals(firstBalance + amount, dashboardPage.getFirstCardBalance());
-        assertEquals(secondBalance - amount, dashboardPage.getSecondCardBalance());
+        assertEquals(firstBalance + amount, dashboardPage.getCardBalance(card1));
+        assertEquals(secondBalance - amount, dashboardPage.getCardBalance(card2));
     }
     @Test
     void shouldTransferMoneyBetweenCards2() {
@@ -37,14 +41,14 @@ class MoneyTransferTest {
         var verificationPage = loginPage.validLogin(authInfo);
         var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
         verificationPage.validVerify(verificationCode);
-        int amount = 1000;
-        int firstBalance = DashboardPage.getFirstCardBalance();
-        int secondBalance = DashboardPage.getSecondCardBalance();
         DashboardPage dashboardPage = new DashboardPage();
+        int amount = 1000;
+        int firstBalance = dashboardPage.getCardBalance(card1);
+        int secondBalance = dashboardPage.getCardBalance(card2);
         var transfer = dashboardPage.choseCard(card2);
         transfer.upCard(amount,card1);
-        assertEquals(firstBalance - amount, dashboardPage.getFirstCardBalance());
-        assertEquals(secondBalance + amount, dashboardPage.getSecondCardBalance());
+        assertEquals(firstBalance - amount, dashboardPage.getCardBalance(card1));
+        assertEquals(secondBalance + amount, dashboardPage.getCardBalance(card2));
     }
 
 }

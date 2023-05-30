@@ -21,23 +21,54 @@ public class DashboardPage {
     public DashboardPage() {
         heading.shouldBe(visible);
     }
+
     public ReplenishmentCardPage choseCard(DataHelper.InfoCard infoCard) {
         cards.findBy(attribute("data-test-id", infoCard.getTestId())).$("[data-test-id=action-deposit]").click();
         return new ReplenishmentCardPage();
     }
-    public static int getFirstCardBalance() {
-        val text = cards.first().text();
-        val start = text.indexOf(balanceStart);
-        val finish = text.indexOf(balanceFinish);
-        val value = text.substring(start + balanceStart.length(), finish);
-        return Integer.parseInt(value);
+
+    public SelenideElement findCard(DataHelper.InfoCard card) {
+        return cards.findBy(attribute("data-test-id", card.getTestId()));
     }
-    public static int getSecondCardBalance() {
-        val text = cards.last().text();
-        val start = text.indexOf(balanceStart);
-        val finish = text.indexOf(balanceFinish);
-        val value = text.substring(start + balanceStart.length(), finish);
-        return Integer.parseInt(value);
+    public int getCardBalance(DataHelper.InfoCard card) {
+        val text = findCard(card).text();
+        return extractBalance(text);
     }
 
+    private int extractBalance(String text) {
+        int start = text.indexOf(balanceStart);
+        int finish = text.indexOf(balanceFinish);
+        String value = text.substring(start + balanceStart.length(), finish);
+        return Integer.parseInt(value);
+    }
 }
+
+
+//    public static int getFirstCardBalance() {
+//        val text = cards.first().text();
+//        val start = text.indexOf(balanceStart);
+//        val finish = text.indexOf(balanceFinish);
+//        val value = text.substring(start + balanceStart.length(), finish);
+//        return Integer.parseInt(value);
+//    }
+//public static int getFirstCardBalance() {
+//    val text = cards.first().text();
+//    return extractBalance(text);
+//}
+//
+//    private static int extractBalance(String text) {
+//        val start = text.indexOf(balanceStart);
+//        val finish = text.indexOf(balanceFinish);
+//        val value = text.substring(start + balanceStart.length(), finish);
+//        return Integer.parseInt(value);
+//    }
+//
+//    public static int getSecondCardBalance() {
+//        val text = cards.last().text();
+//        val start = text.indexOf(balanceStart);
+//        val finish = text.indexOf(balanceFinish);
+//        val value = text.substring(start + balanceStart.length(), finish);
+//        return Integer.parseInt(value);
+//    }
+//
+//}
