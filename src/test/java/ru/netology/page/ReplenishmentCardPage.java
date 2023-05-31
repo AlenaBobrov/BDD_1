@@ -25,5 +25,8 @@ public class ReplenishmentCardPage {
         topUpButton.click();
         return new DashboardPage();
     }
-
+    public DashboardPage cancel() {
+        canselButton.click();
+        return new DashboardPage();
+    }
 }
