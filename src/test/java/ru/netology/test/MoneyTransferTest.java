@@ -46,6 +46,28 @@ class MoneyTransferTest {
         assertEquals(backSecondBalance - backAmount, backDashboardPage.getCardBalance(card2));
     }
     @Test
+    void shouldTransferMoneyBetweenCards3() {
+        DashboardPage dashboardPage = new DashboardPage();
+        int amount = 5000;
+        int firstBalance = dashboardPage.getCardBalance(card1);
+        int secondBalance = dashboardPage.getCardBalance(card2);
+        var transfer = dashboardPage.choseCard(card2);
+        transfer.upCard(amount,card1);
+        assertEquals(firstBalance - amount, dashboardPage.getCardBalance(card1));
+        assertEquals(secondBalance + amount, dashboardPage.getCardBalance(card2));
+    }
+    @Test
+    void shouldTransferMoneyBetweenCards4() {
+        DashboardPage backDashboardPage = new DashboardPage();
+        int backAmount = 5000;
+        int backFirstBalance = backDashboardPage.getCardBalance(card1);
+        int backSecondBalance = backDashboardPage.getCardBalance(card2);
+        var backTransfer = backDashboardPage.choseCard(card1);
+        backTransfer.upCard(backAmount,card2);
+        assertEquals(backFirstBalance + backAmount, backDashboardPage.getCardBalance(card1));
+        assertEquals(backSecondBalance - backAmount, backDashboardPage.getCardBalance(card2));
+    }
+    @Test
     void shouldCancel() {
         DashboardPage dashboardPage = new DashboardPage();
         int firstBalance = dashboardPage.getCardBalance(card1);
